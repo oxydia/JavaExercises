@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:umlv="http://www.umlv.fr/2005/tipi" lang="fr" xml:lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Classes abstraites, classes internes et generics</title><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/stylesheet.css" media="screen"></link><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/printstylesheet.css" media="print"></link><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/sh_ide-eclipse.css"></link><SCRIPT type="text/javascript">
+	      if(document.location.href.indexOf('http://igm/',0)!=-1){
+	              document.location.href=document.location.href.replace(/.univ-mlv.fr/,'').replace(/http:\/\/(igm|www-igm)/,'http://igm.univ-mlv.fr');
+		      }
+	      if(document.location.href.indexOf('http://www-igm/',0)!=-1){
+		                            document.location.href=document.location.href.replace(/.univ-mlv.fr/,'').replace(/http:\/\/(igm|www-igm)/,'http://igm.univ-mlv.fr');
+					                          }
+		function viewPDF(){
+			window.print();
+		}
+			
+		function myswitch(){
+		if(document.location.href.indexOf('index')>-1){
+			document.location.href= document.location.href.replace(/ens/,'ens/private').replace('http://','https://');
+		}else{
+		document.location.href= document.location.href.replace(/ens/,'ens/private').replace(/.php/,'_cor.php').replace('http://','https://');
+		}	
+		}
+	</SCRIPT></head><body><div class="conteneur"><div class="contenu"><span style="float:right;" class="noprint"><div class="noprint"><table><tr><td><a href="javascript:myswitch();" style="text-decoration:none"><img src="http://igm.univ-mlv.fr/ens/resources/lock_icon.gif" class="noprint" align="middle"></img></a></td></tr></table></div></span><span style="text-align:left;"><a>::</a><a href="./../../../../index.php"> Enseignements </a>::<a href="./../../../index.php"> IMAC </a>::<a href="./../../index.php"> IMAC2 </a>::<a href="./../index.php"> IMAC2 2011-2012 </a>::<a href="./index.php"> Programmation Java </a>::</span><hr noshade size="1"></hr><table><tr><td valign="middle"><img class="print" src="http://igm.univ-mlv.fr/ens/resources/mlv.png" alt="[LOGO]"></img></td><td style="vertical-align : middle;"><h1>Classes abstraites, classes internes et generics</h1></td></tr></table><hr></hr>
+
+
+
+
+	Nous utilisons dans le 1er exercice une classe abstraite afin de factoriser le code de certaines méthodes. Dans l'exercice 2, nous crééons une classe interne statique. L'exercice 3 est l'occasion d'introduire le mécanisme de generics.
+<hr xmlns="" size="1" noshade>
+
+<h3 xmlns="">Exercice 1 - Classe abstraite</h3>
+	<div xmlns="">
+		Nous constatons que les classes Book, Comic, AudioCD et VideoDVD dupliquent du code inutilement pour les méthodes <tt>getTitle()</tt>, <tt>getPrice()</tt> et <tt>getTaxIncludedPrice(double rate)</tt>. Pour éviter ces duplications de méthodes, nous crééons une classe abstraite AbstractMediaBuyable qui contiendra l'implantation de ces méthodes ; les classes sus-citées hériteront alors de cette nouvelle classe abstraite.
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		<ul>
+			<li>Implanter la classe abstraite AbstractMediaBuyable</li>
+			<li>Modifier les classes Book, Comic, AudioCD et VideoDVD pour qu'elles héritent de cette classe</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+<h3 xmlns="">Exercice 2 - Classe interne statique</h3>
+	<div xmlns="">
+		Un média peut être décomposé en sous-parties (par exemple un livre en chapitres, un CD audio en pistes musicales, un DVD vidéo en différentes sections...). Nous allons donc créer une classe interne statique Subpart pour représenter une sous-partie. Une sous-partie contient pour information son titre.
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		<ul>
+			<li>Définir la classe Subpart dans la classe AbstractMediaBuyable</li>
+			<li>Ajouter un champ ainsi que des méthodes pour stocker, obtenir et ajouter des sous-parties</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+<h3 xmlns="">Exercice 3 - Generics</h3>
+	<div xmlns="">
+		On souhaiterait pouvoir stocker les sous-parties d'un média en utilisant la classe LinkedList que nous avons créée au TD précédent. Malheureusement, cette classe a été codée avec des maillons pouvant contenir des MediaBuyable et non des Subpart. Une première solution serait d'utiliser le type racine Object : cela nous obligerait alors à caster les éléments récupérés. Une meilleure solution consiste à rendre la classe LinkedList (ainsi que Link) générique afin qu'elle puisse s'adapter au type que l'on manipule.
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		<ul>
+			<li>Rendre générique les classes LinkedList et Link</li>
+			<li>Modifier en conséquence les classes utilisant LinkedList, i.e. AbstractMediaBuyable et Library</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+<hr noshade size="1"></hr><span style="float:right;" class="noprint"><div class="noprint"></div></span><div align="center" class="copyright">© Université de Marne-la-Vallée</div></div></div></body></html>

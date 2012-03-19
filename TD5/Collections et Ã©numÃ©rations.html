@@ -1,0 +1,123 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:umlv="http://www.umlv.fr/2005/tipi" lang="fr" xml:lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Collections et énumérations</title><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/stylesheet.css" media="screen"></link><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/printstylesheet.css" media="print"></link><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/sh_ide-eclipse.css"></link><SCRIPT type="text/javascript">
+	      if(document.location.href.indexOf('http://igm/',0)!=-1){
+	              document.location.href=document.location.href.replace(/.univ-mlv.fr/,'').replace(/http:\/\/(igm|www-igm)/,'http://igm.univ-mlv.fr');
+		      }
+	      if(document.location.href.indexOf('http://www-igm/',0)!=-1){
+		                            document.location.href=document.location.href.replace(/.univ-mlv.fr/,'').replace(/http:\/\/(igm|www-igm)/,'http://igm.univ-mlv.fr');
+					                          }
+		function viewPDF(){
+			window.print();
+		}
+			
+		function myswitch(){
+		if(document.location.href.indexOf('index')>-1){
+			document.location.href= document.location.href.replace(/ens/,'ens/private').replace('http://','https://');
+		}else{
+		document.location.href= document.location.href.replace(/ens/,'ens/private').replace(/.php/,'_cor.php').replace('http://','https://');
+		}	
+		}
+	</SCRIPT></head><body><div class="conteneur"><div class="contenu"><span style="float:right;" class="noprint"><div class="noprint"><table><tr><td><a href="javascript:myswitch();" style="text-decoration:none"><img src="http://igm.univ-mlv.fr/ens/resources/lock_icon.gif" class="noprint" align="middle"></img></a></td></tr></table></div></span><span style="text-align:left;"><a>::</a><a href="./../../../../index.php"> Enseignements </a>::<a href="./../../../index.php"> IMAC </a>::<a href="./../../index.php"> IMAC2 </a>::<a href="./../index.php"> IMAC2 2011-2012 </a>::<a href="./index.php"> Programmation Java </a>::</span><hr noshade size="1"></hr><table><tr><td valign="middle"><img class="print" src="http://igm.univ-mlv.fr/ens/resources/mlv.png" alt="[LOGO]"></img></td><td style="vertical-align : middle;"><h1>Collections et énumérations</h1></td></tr></table><hr></hr>
+
+
+
+
+	Ce TD est l'occasion d'avoir un aperçu des collections (java.util.Collection) de l'API Java avec les listes (List), les ensembles (Set) et les dictionnaires (Map). Nous abordons également l'usage des énumérations (Enum).
+<hr xmlns="" size="1" noshade>
+
+<h3 xmlns="">Exercice 1 - Enum</h3>
+	<div xmlns="">
+		Une énumération est une classe spécifique définissant un ensemble de constantes auxquelles nous pouvons associer des propriétés. Nous souhaitons ici créer une énumération pour spécifier les différentes versions de média, associées à une propriété de modification de prix (double indiquant le coefficient multiplicateur) et de titre (suffixe à ajouter). Voici les différentes versions :
+			<ul>
+				<li>Version collector (prix * 1.10, suffixe de titre "collector")</li>
+				<li>Version soldée (prix * 0.5, suffixe de titre "discount")</li>
+				<li>Version normale (prix * 1.0, suffixe de titre vide)</li>
+			</ul>
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		<ul>
+			<li>Créer la classe enum Version avec les différentes versions avec une méthode <tt>String getExtension()</tt> pour obtenir le suffixe de titre et <tt>double modifyPrice(double price)</tt> pour adapter le prix normal à la version.</li>
+			<li>Adapter la classe AbstractMediaBuyable en ajoutant un champ enum Version, en ajoutant un constructeur avec un argument version et en modifiant l'implantation des méthodes <tt>String getTitle()</tt> et <tt>double getPrice()</tt>.</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+
+
+<h2 xmlns="">Les collections</h2>
+	<div xmlns="">
+		L'interface java.util.Collection définit des méthodes permettant d'obtenir le nombre d'éléments de la collection (<tt>int size()</tt>) ainsi qu'un itérateur (en étendant Iterable) pour parcourir les éléments de cette collection. Des méthodes permettent également de modifier la collection en y ajoutant ou supprimant un élément. Les interfaces List et Set héritent de Collection.
+	</div>
+<br xmlns="">
+
+
+<h3 xmlns="">Exercice 2 - List</h3>
+	<div xmlns="">
+		Une liste est une collection ordonnée d'éléments. Plutôt que d'utiliser un itérateur obligeant de parcourir les éléments précédents, il est possible d'accéder à l'élément i d'une liste à l'aide de la méthode E get(int index)
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		<ul>
+			<li>Comparer les classes ArrayList et LinkedList pour les opérations courantes (accès à l'élément d'indice i, ajout d'un élément, suppression d'un élément).</li>
+			<li>On souhaite remplacer le type fr.upemlv.data.LinkedList utilisé dans la classe Library par soit java.util.ArrayList, soit java.util.LinkedList. Quel choix est le plus judicieux ? Pourquoi ?</li>
+			<li>Adapter la classe Library pour le nouveau type de liste.</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+
+
+<h3 xmlns="">Exercice 3 - Set</h3>
+	<div xmlns="">
+		Un Set est un ensemble ne contenant qu'une seule fois chaque élément. Il peut être ordonné (LinkedHashSet où l'ordre d'insertion des éléments est conservé) ou non (par exemple HashSet).
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		Pour savoir si un élément est déjà présent dans l'ensemble, il est nécessaire d'indexer ceux-ci dans la structure utilisée. Deux principales approches sont employées dans l'API Java :
+		<ul>
+			<li>L'indexation par table de hachage avec HashSet</li>
+			<li>L'indexation par arbre binaire de recherche utilisant un équilibrage "rouge-noir" avec TreeSet</li>
+		</ul>
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		Pour insérer ou rechercher un élément dans une table de hachage, il est nécessaire de calculer pour chaque élément une valeur de hachage entière : il faut redéfinir la méthode <tt>int hashCode()</tt> de Object qui retourne initialement l'adresse mémoire de l'objet (suffisant pour une égalité par référence mais pas pour une égalité de contenu de l'objet). Deux objets égaux selon leur méthode equals retournent nécessairement la même valeur de hachage ; deux objets de même valeur de hachage ne sont pas égaux. Une itération sur un HashSet retourne les éléments en suivant l'ordre de leur valeur de hachage (cet ordre peut être considéré comme quelconque).
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		Pour manipuler des éléments dans un TreeSet, ceux-ci doivent être munis d'un ordre total : ils doivent implanter l'interface Comparable&lt;T&gt; pour pouvoir les comparer à un autre élément du même type. Cette interface définit une méthode <tt>int compare(T e)</tt> retournant une valeur nulle si this et e sont égaux, une valeur négative si this &lt; e, positive si this &gt; e.
+	</div>
+<br xmlns="">
+
+	<div xmlns="">
+		On souhaite ajouter une livre d'or dans la classe Library afin de pouvoir y ajouter des messages. Pour éviter les doublons, on utilise un Set.
+		<ul>
+			<li>Ajouter un champ pour le livre d'or dans Library ainsi que des méthodes <tt>void addMessage(String message)</tt> et <tt>printMessages()</tt> ; on ne souhaite pas pour l'instant conserver les messages dans un ordre spécifique.</li>
+			<li>Modifier le type du champ pour que les messages soient affichés dans un premier temps dans l'ordre chronologique puis dans un deuxième temps dans l'ordre alphabétique</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+<h3 xmlns="">Exercice 4 - Map</h3>
+	<div xmlns="">
+		On souhaite associer à chacun des médias de la bibliothèque une note. On utilise pour cela une Map qui associe à chacune de ses clés (ici les médias) une valeur (un Double).
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		<ul>
+			<li>Quelles sont les différences entre Set et Map. Serait-il possible de réimplanter un Set en utilisant une Map ?</li>
+			<li>Consulter la Javadoc pour répertorier les classes concrètes implantant l'interface Map : quelle classe choisir pour la situation présente ?</li>
+			<li>Implanter une méthode <tt>double getNote(MediaBuyable media)</tt> et <tt>void setNote(MediaBuyable mb, double note)</tt> dans la classe Library.</li>
+			<li>Modifier la classe Library afin que lors de l'appel à <tt>setNote</tt> si une notation a déjà eu lieu pour le média, celle-ci soit mise à jour en calculant une moyenne de notes plutôt que de remplacer l'ancienne note.</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+
+
+<hr noshade size="1"></hr><span style="float:right;" class="noprint"><div class="noprint"></div></span><div align="center" class="copyright">© Université de Marne-la-Vallée</div></div></div></body></html>

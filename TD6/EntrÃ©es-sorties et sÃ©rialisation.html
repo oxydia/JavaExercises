@@ -1,0 +1,82 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:umlv="http://www.umlv.fr/2005/tipi" lang="fr" xml:lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Entrées/sorties et sérialisation</title><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/stylesheet.css" media="screen"></link><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/printstylesheet.css" media="print"></link><link rel="stylesheet" type="text/css" href="http://igm.univ-mlv.fr/ens/resources/sh_ide-eclipse.css"></link><SCRIPT type="text/javascript">
+	      if(document.location.href.indexOf('http://igm/',0)!=-1){
+	              document.location.href=document.location.href.replace(/.univ-mlv.fr/,'').replace(/http:\/\/(igm|www-igm)/,'http://igm.univ-mlv.fr');
+		      }
+	      if(document.location.href.indexOf('http://www-igm/',0)!=-1){
+		                            document.location.href=document.location.href.replace(/.univ-mlv.fr/,'').replace(/http:\/\/(igm|www-igm)/,'http://igm.univ-mlv.fr');
+					                          }
+		function viewPDF(){
+			window.print();
+		}
+			
+		function myswitch(){
+		if(document.location.href.indexOf('index')>-1){
+			document.location.href= document.location.href.replace(/ens/,'ens/private').replace('http://','https://');
+		}else{
+		document.location.href= document.location.href.replace(/ens/,'ens/private').replace(/.php/,'_cor.php').replace('http://','https://');
+		}	
+		}
+	</SCRIPT></head><body><div class="conteneur"><div class="contenu"><span style="float:right;" class="noprint"><div class="noprint"><table><tr><td><a href="javascript:myswitch();" style="text-decoration:none"><img src="http://igm.univ-mlv.fr/ens/resources/lock_icon.gif" class="noprint" align="middle"></img></a></td></tr></table></div></span><span style="text-align:left;"><a>::</a><a href="./../../../../index.php"> Enseignements </a>::<a href="./../../../index.php"> IMAC </a>::<a href="./../../index.php"> IMAC2 </a>::<a href="./../index.php"> IMAC2 2011-2012 </a>::<a href="./index.php"> Programmation Java </a>::</span><hr noshade size="1"></hr><table><tr><td valign="middle"><img class="print" src="http://igm.univ-mlv.fr/ens/resources/mlv.png" alt="[LOGO]"></img></td><td style="vertical-align : middle;"><h1>Entrées/sorties et sérialisation</h1></td></tr></table><hr></hr>
+
+
+
+
+	Ce TD aborde les entrées/sorties de la bibliothèque java.io ainsi que les capacités de sérialisation de Java (permettant de sauvegarder des objets dans des fichiers).
+<hr xmlns="" size="1" noshade>
+
+<h3 xmlns="">Exercice 1 - Écriture/lecture de bibliothèque</h3>
+	<div xmlns="">
+		Nous aimerions que notre bibliothèque puisse survivre à l'exécution de la JVM. Pour cela nous choisissons de l'enregistrer dans un fichier. Ce fichier pourra ensuite être lu pour que les livres qui y figurent puissent être rajoutés dans une nouvelle bibliothèque.
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		À cet effet, on écrit deux méthodes de rôle symétrique : 
+		<ul>
+			<li>
+<tt>void writeMedias(OutputStream out)</tt> qui écrit les médias de la bibliothéque dans le flux sortant;</li>
+			<li>
+<tt>void readMedias(InputStream in)</tt> lisant les médias provenant d'un flux entrant pour les ajouter dans la bibliothèque courante.</li>
+		</ul>
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		On écrira les médias les uns à la suite des autres sous forme de lignes de texte respectant le format suivant :
+		<ul>
+			<li>Type de média (Book, Comic, VideoDVD...)</li>
+			<li>Premier attribut du média</li>
+			<li>Deuxième attribut du média</li>
+			<li>...</li>
+			<li>Ligne vide de séparation</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+
+
+<h3 xmlns="">Exercice 2 - Sérialisation</h3>
+	<div xmlns="">
+		Nous venons (sans vraiment le savoir) d'écrire des méthodes permettant la sérialisation d'une bibliothèque. Le code produit est cependant peu évolutif : une disjonction de cas est réalisée dans les méthodes d'écriture et de lecture afin de gérer les différents types de médias ; le support d'un nouveau média ou la modification d'une classe de média existante nécessiterait de modifier ces deux méthodes. Il serait plus raisonnable de séparer les méthodes de sérialisation de chacune des classes manipulées dans des méthodes distinctes.
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		Java offre des capacités de sérialisation automatique : les classes susceptibles d'être sérialisées doivent implanter l'interface Serializable. Il est inutile d'implanter soi-même les méthodes de sérialisation : Java analyse les classes par introspection et écrit les champs non-marqués comme transient. La gestion de la sérialisation peut cependant s'avérer délicate si la classe a évolué entre la sérialisation d'un objet et sa désérialisation (renommage de champs, changement de type de champs...). On peut associer à chaque classe un champ static final long serialVersionUID = x; pour spécifier son numéro de version : si la version de la classe stockée et la classe courante divergent, un exception sera levée lors de la lecture de l'objet.
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		La sérialisation standard est facile à mettre en oeuvre mais s'avère lente à l'exécution et peu flexible. L'interface Externalizable propose deux méthodes à implanter afin d'expliciter manuellement la procédure de sérialisation/désérialization d'un objet.
+	</div>
+<br xmlns="">
+	<div xmlns="">
+		<ul>
+			<li>Dans un premier temps, on testera la sérialisation standard avec l'interface Serializable. Examiner le fichier de sérialisation créé. Essayer de marquer certains champs comme transient : que peut-on remarquer ?</li>
+			<li>Dans un second temps, on implantera intelligemment l'interface Externalizable pour Library et les différents médias afin de sauvegarder soi-même les champs intéressants.</li>
+		</ul>
+	</div>
+<br xmlns="">
+
+
+
+
+<hr noshade size="1"></hr><span style="float:right;" class="noprint"><div class="noprint"></div></span><div align="center" class="copyright">© Université de Marne-la-Vallée</div></div></div></body></html>
