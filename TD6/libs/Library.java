@@ -5,14 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.HashMap;
-import java.io.OutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.IOException;
+import java.io.*;
 
-public class Library extends LinkedList<MediaBuyable> {
+public class Library extends LinkedList<MediaBuyable> implements Serializable, Externalizable {
     private final int _capacity;
     private Set<String> _goldBook;
     private HashMap<MediaBuyable, Double> _notes;
@@ -125,45 +120,50 @@ public class Library extends LinkedList<MediaBuyable> {
     }
 
     /*
-        INPUT OUTPUT
+        EXTERNALIZATION
     */
-    public void writeMedias(OutputStream out) throws IOException {
-        OutputStreamWriter writer = new OutputStreamWriter(out, "latin1");
-        try {
-            for (int i =0; i<size();++i)
-                writer.write(get(i).toBackup());
-        } finally {
-            writer.close();
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(size());
+        for (int i =0; i<size();++i)
+            get(i).writeExternal(out);
+    }
+    public void readExternal(ObjectInput in) throws IOException {
+        int nbObjects = in.readInt();
+        for (int i = 0; i < nbObjects; ++i) {
+            add(in.readOject());
         }
     }
 
     // @todo : TO BE CONCLUDED
     public void readMedias(InputStream in) throws IOException {
-        InputStreamReader reader = new InputStreamReader(in, "latin1");
-        BufferedReader buffer = new BufferedReader(in);
+        Reader reader = new InputStreamReader(in, "latin1");
+        BufferedReader buffer = new BufferedReader(reader);
         try{
             //do {
                 String type = buffer.readLine();
-                MediaBuyable mb;
+                //MediaBuyable mb;
                 if(type.equals("Book")) {
+                    String title = buffer.readLine();
                     String author = buffer.readLine();
-                    double price = buffer.readLine();
-                    // mb = ...
+                    String isbn = buffer.readLine();
+                    String price_in = buffer.readLine();
+                    double price = Double.parseDouble(price_in);
+                    this.add(new Book(title, author, isbn, price));
                 } else if (type.equals("Comic")) {
 
                 } else {
 
                 }
-                lib.add(mb);
+                //add(mb);
             //} while (...);
+        } finally {
+
         }
     }
 
     public static void main(String[] args) throws Exception {
-
         Library lib = new Library(5);
         Book hp1 = new Book("Harry Potter", "J.K. Rollin'", "12345-5421d-dsqd254-dqsd524", 2.00);
-        System.out.println(hp1);
         Comic c1 = new Comic("Superman", "Marvel", "toto","12345-5258d-azerty-dqsd524", 2.00, true);
         lib.add(hp1);
         lib.add(new Book("L'écume des jours", "Boris Vian", "AEZD01"));
@@ -177,6 +177,7 @@ public class Library extends LinkedList<MediaBuyable> {
         System.out.println("Harry Potter inside ? " + lib.contains(hp1));
 
         Book hp2 = new Book("Harry Potter2", "J.K. Rollin'", 2.00);
+
         System.out.println("Superman equals SUperman rolalala ? " + c1.equals(c3));
 
         System.out.println("Counter of books ? " + Book.count());
@@ -203,9 +204,28 @@ public class Library extends LinkedList<MediaBuyable> {
         lib.setNote(hp1, 16.0);
         System.out.println("La note du livre " + hp1.title() + " est " + lib.getNote(hp1));
 
-        // sortie dans un fichier
-        FileOutputStream out = new FileOutputStream("Library.txt");
-        lib.writeMedias(out);
-        out.close();
+        System.out.println(hp1 instanceof Serializable);
+
+        //Serialization
+        // OUTPUT
+        ObjectOutputStream oos = null;
+        try{
+            oos = new ObjectOutputStream(new FileOutputStream("_lib.txt"));
+            oos.writeObject(lib);
+        }
+        finally {
+            oos.close();
+        }
+        // INPUT
+        ObjectInputStream ois = null;
+        Library lib2;
+        try {
+            ois = new ObjectInputStream(new FileInputStream("_lib.txt"));
+            lib2 = (Library) ois.readObject();
+        } finally {
+            ois.close();
+        }
+        System.out.println("Library 2 = \n"+lib2);
+
     } 
 }

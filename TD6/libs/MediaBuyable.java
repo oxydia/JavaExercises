@@ -1,6 +1,7 @@
 package libs;
+import java.io.Serializable;
 
-public interface MediaBuyable {
+public interface MediaBuyable extends Serializable {
     public String title();
     public double price();
     public double taxIncludedPrice(double taxRate);

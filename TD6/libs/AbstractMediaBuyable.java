@@ -1,7 +1,8 @@
 package libs;
 import fr.upemlv.data.LinkedList;
+import java.io.*;
 
-public class AbstractMediaBuyable implements MediaBuyable {
+public class AbstractMediaBuyable implements MediaBuyable, Externalizable {
 
     public class Subpart {
         private String _title;
@@ -25,6 +26,12 @@ public class AbstractMediaBuyable implements MediaBuyable {
     public AbstractMediaBuyable(String title, double price) {
         _title = title;
         _price = price;
+        _version = Version.NORMAL;
+    }
+
+    public AbstractMediaBuyable(){
+        _title = "";
+        _price = 0;
         _version = Version.NORMAL;
     }
 
@@ -84,5 +91,26 @@ public class AbstractMediaBuyable implements MediaBuyable {
 
     public String toBackup() {
         return "AbstractMediaBuyable\n"+_title+"\n"+_price+"\n\n";
+    }
+
+    public void writeExternal(ObjectOutput out) {
+        out.writeUTF(_title);
+        out.writeDouble(_price);
+        out.writeUTF(_version.name());
+        out.writeInt(_subparts.size);
+        // loop on _subparts
+        for(Iterator<Subpart> it = _subparts.iterator(); it.hasNext();)
+            out.writeUTF(it.next().title());
+    }
+
+    public void readExternal(ObjectInput in) {
+        try {
+            _title = in.readUTF();
+            _price = in.readDouble();
+            _version = Version.valueOf(in.readUTF());
+            nbSubparts = in.readInt();
+            for(int i = 0; i < nbSubparts; ++i)
+                this.addSubpart(new Subpart(in.readUTF()));
+        } catch(Exception e){}
     }
 }

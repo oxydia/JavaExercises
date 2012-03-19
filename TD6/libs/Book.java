@@ -1,8 +1,9 @@
 package libs;
+import java.io.*;
 
 public class Book extends AbstractMediaBuyable {
-    public final String _author;
-    public final String _isbn;
+    public String _author;
+    public String _isbn;
     public static int _count = 0;
 
     public Book(String title, String author, String isbn, double price) {
@@ -22,6 +23,11 @@ public class Book extends AbstractMediaBuyable {
 
     public Book(String title, String author) {
         this(title, author, "", 0.);
+    }
+
+    public Book() {
+        _author = "";
+        _isbn = "";
     }
 
     public void finalize() {
@@ -59,4 +65,18 @@ public class Book extends AbstractMediaBuyable {
         System.out.println(b1.equals(b3)); 
 		
     }*/
+
+    // Externalization
+    public void writeExternal(ObjectOutput out) {
+        super.writeExternal(out);
+        out.writeUTF(_author);
+        out.writeUTF(_isbn);
+        out.writeInt(_count);
+    }
+    public void readExternal(ObjectInput in) {
+        super.readExternal(in);
+        _author = in.readUTF();
+        _isbn = in.readUTF();
+        _count = in.readInt();
+    }
 }

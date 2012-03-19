@@ -1,8 +1,8 @@
 package libs;
-import java.utils.Set;
+import java.util.Set;
 
-public class GoldBook extends Set{
+abstract public class GoldBook implements Set {
     public void addMessages(String message){
-        livreDor.add(message);
+        this.add(message);
     }
 }

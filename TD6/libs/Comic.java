@@ -1,8 +1,9 @@
 package libs;
+import java.io.*;
 
 public class Comic extends Book {
-    public final String _drawer;
-    public final boolean _colored;
+    public String _drawer;
+    public boolean _colored;
 
     public Comic(String title, String author, String drawer, String isbn, double price, boolean colored) {
         super(title, author, isbn, price);
@@ -12,6 +13,11 @@ public class Comic extends Book {
 
     public Comic(String title, String author, String isbn, double price, boolean colored) {
         this(title, author, author, isbn, price, colored);
+    }
+
+    public Comic() {
+        _drawer = "";
+        _colored = false;
     }
 
     @Override public String toString() {
@@ -28,5 +34,17 @@ public class Comic extends Book {
 
     public String toBackup() {
         return "Comic\n"+title()+"\n"+price()+"\n"+_drawer+"\n"+_isbn+"\n"+price()+"\n"+_colored+"\n\n";
+    }
+
+    // Externalization
+    public void writeExternal(ObjectOutput out) {
+        super.writeExternal(out);
+        out.writeUTF(_drawer);
+        out.writeBoolean(_colored);
+    }
+    public void readExternal(ObjectInput in) {
+        super.readExternal(in);
+        _drawer = in.readUTF();
+        _colored = in.readBoolean();
     }
 }

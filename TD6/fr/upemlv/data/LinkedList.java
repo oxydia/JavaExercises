@@ -1,5 +1,6 @@
 package fr.upemlv.data;
-
+import java.io.Serializable;
+import java.io.Externalizable;
 import java.util.Iterator;
 
 /**
@@ -10,7 +11,7 @@ public class LinkedList<T> implements Iterable<T> {
     /**
     *   Link class
     */
-    public static class Link<T> {
+    public static class Link<T> implements Serializable {
         public final T data;
         public Link next;    
         public Link(T data){
@@ -20,6 +21,10 @@ public class LinkedList<T> implements Iterable<T> {
         public void setNext(Link next){
             this.next = next;
         }
+        /*
+        public void writeExternal(ObjectOutput out) {}
+        public void readExternal(ObjectInput in) {}
+        */
     }
 
     /**
@@ -71,6 +76,5 @@ public class LinkedList<T> implements Iterable<T> {
     public Iterator<T> iterator() {
         return new LinkedListIterator(first);
     }
-
     
 }
